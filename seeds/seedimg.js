@@ -24,7 +24,5 @@ exports.seed = async function (knex) {
   await knex("contract_descriptions").del();
   await knex("public_images_controller").insert(pubimgscontroller);
   await knex("hero_titles").insert(herotitles);
-  await knex("contract_descriptions");
-  //need to make collection project titles
-  //await knex("contract_descriptions")
+  await knex("contract_descriptions").insert(pubdescription);
 };
