@@ -1,0 +1,6 @@
+node_modules/*
+*.json
+*.jpg
+.env
+seed-data/*
+create-images.js
