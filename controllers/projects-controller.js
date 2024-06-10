@@ -115,7 +115,6 @@ const _fetchAllPreviewProjectsInfo = async () => {
     const responseText = await db("contract_descriptions")
       .select("project_name", "description")
       .where({ display: 1 });
-    console.log(responseText);
 
     const projects_data = [];
 

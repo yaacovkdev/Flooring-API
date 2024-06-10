@@ -33,7 +33,8 @@ exports.up = function (knex) {
     .createTable("contract_descriptions", (table) => {
       table.increments("id").primary();
       table.string("project_name").notNullable();
-      table.string("description").notNullable().defaultTo("");
+      table.boolean("display").notNullable().defaultTo(false);
+      table.specificType('description', 'LONGTEXT').notNullable();
       table.timestamp("created_at").defaultTo(knex.fn.now());
       table
         .timestamp("updated_at")

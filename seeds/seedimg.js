@@ -14,7 +14,7 @@ const herotitles = require(path.join(
 ));
 const pubdescription = require(path.join(
   __dirname,
-  "../seed-data/public_project_description.json"
+  "../seed-data/public_project_descriptions.json"
 ));
 
 exports.seed = async function (knex) {
