@@ -32,8 +32,19 @@ exports.up = function (knex) {
     })
     .createTable("contract_descriptions", (table) => {
       table.increments("id").primary();
-      table.string("project_name").notNullable();
-      table.string("description").notNullable().defaultTo("");
+      table.string("name").notNullable();
+      table.boolean("display").notNullable().defaultTo(false);
+      table.specificType('description', 'LONGTEXT').notNullable();
+      table.string("dir").notNullable();
+      table.timestamp("created_at").defaultTo(knex.fn.now());
+      table
+        .timestamp("updated_at")
+        .defaultTo(knex.raw("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"));
+    })
+    .createTable("admin_users", (table) => {
+      table.increments("id").primary();
+      table.string("email").notNullable();
+      table.string("password").notNullable();
       table.timestamp("created_at").defaultTo(knex.fn.now());
       table
         .timestamp("updated_at")
@@ -49,5 +60,6 @@ exports.down = function (knex) {
   return knex.schema
     .dropTable("hero_titles")
     .dropTable("public_images_controller")
-    .dropTable("contract_descriptions");
+    .dropTable("contract_descriptions")
+    .dropTable("admin_users");
 };
