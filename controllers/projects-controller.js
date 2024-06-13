@@ -21,7 +21,7 @@ const authorize = async (req, res, next) => {
 const _fetchProjectInfoById = async (req, _res) => {
   try {
     const responseText = await db("contract_descriptions")
-      .select("name", "description", "dir")
+      .select("id", "name", "description", "dir")
       .where({ id: req.params.id })
       .andWhere({ display: 1 });
 
@@ -47,19 +47,18 @@ const _fetchProjectInfoById = async (req, _res) => {
         .where({ type: "work" })
         .andWhere({ display: 1 })
         .andWhereLike("dir", `%${responseText[0].dir}%`);
-
-      console.log(responseImage);
     }
 
     if (responseImage.length === 0 || responseText.length === 0)
       throw new Error();
 
+    delete responseText[0].dir;
     //return info for only one project
     return Object.assign(
       {
-        images: new Array(
-          req.preview ? responseImage[0] : { ...responseImage }
-        ),
+        images: req.preview
+          ? new Array(responseImage[0])
+          : new Array(...responseImage),
       },
       responseText[0]
     );
@@ -104,12 +103,15 @@ const _fetchAllProjectsInfo = async (req, _res) => {
       }
 
       //add the project data to the response
+
+      delete responseText[0].dir;
+
       projects_data.push(
         Object.assign(
           {
-            images: new Array(
-              req.preview ? responseImage[0] : { ...responseImage }
-            ),
+            images: req.preview
+              ? new Array(responseImage[0])
+              : new Array(...responseImage),
           },
           responseText[i]
         )
@@ -128,7 +130,6 @@ const getProjectId = async (req, res) => {
   req["preview"] = "preview" in req.query;
   try {
     const data = await _fetchProjectInfoById(req, res);
-    console.log(data);
     res.status(200).json(data);
   } catch (err) {
     res.status(404).json({ message: "Get Projects Error" });

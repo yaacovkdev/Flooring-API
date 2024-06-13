@@ -4,8 +4,6 @@ const cors = require("cors");
 require("dotenv").config();
 const path = require("path");
 const cookieParser = require("cookie-parser");
-const https = require("https");
-const fs = require("fs");
 
 // Create an instance of the express app
 const app = express();
@@ -34,22 +32,10 @@ app.use("/admin", adminRoutes);
 
 // Basic route
 app.get("/", (req, res) => {
-  res.send("Hello, World!");
+  res.send("API for Flooring!");
 });
 
-const privateKey = fs.readFileSync(
-  path.join(__dirname, "./pem/key.pem"),
-  "utf8"
-);
-const certificate = fs.readFileSync(
-  path.join(__dirname, "./pem/cert.pem"),
-  "utf8"
-);
-
-const credentials = {key: privateKey, cert: certificate};
-const httpsServer = https.createServer(credentials, app);
-
 // Start the server
-httpsServer.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

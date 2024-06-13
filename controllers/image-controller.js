@@ -79,6 +79,7 @@ const getImageById = async (req, res) => {
 
 const getImageByIdText = async (req, res) => {
   try {
+    //gets text of hero by the id linked to the hero image
     const response = await db("hero_titles")
       .select("body")
       .where({ image_id: req.params.id });
@@ -101,14 +102,6 @@ const getImagesByType = async (req, res) => {
   }
 };
 
-const getImagesByProjectName = async (req, res) => {
-  try {
-    const response = await db("");
-  } catch (error) {
-    res.status(404).json({ message: "Getting Image Error", error });
-  }
-};
-
 module.exports = {
   authorize,
   getImageByName,
@@ -116,5 +109,4 @@ module.exports = {
   getImageById,
   getImageByIdText,
   getImagesByType,
-  getImagesByProjectName,
 };
