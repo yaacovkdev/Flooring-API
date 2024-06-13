@@ -21,6 +21,13 @@ const authorize = async (req, res, next) => {
   }
 };
 
+const _pathToUnix = (strpath) => {
+  if(process.platform !== "win32") {
+    return strpath.replace(/[\\]/g, "/");
+  }
+  return strpath;
+}
+
 //returns image
 const getImageByName = async (req, res) => {
   try {
@@ -30,7 +37,7 @@ const getImageByName = async (req, res) => {
 
     const imagePath = `..\\${response[0].dir}`;
 
-    res.status(200).sendFile(path.join(__dirname, imagePath));
+    res.status(200).sendFile(path.join(__dirname, _pathToUnix(imagePath)));
   } catch (error) {
     res.status(404).json({ message: "Getting Image Error" });
   }
@@ -56,7 +63,7 @@ const getImageById = async (req, res) => {
 
     const imagePath = `..\\${response[0].dir}`;
 
-    res.status(200).sendFile(path.join(__dirname, imagePath));
+    res.status(200).sendFile(path.join(__dirname, _pathToUnix(imagePath)));
   } catch (error) {
     res.status(404).json({ message: "Getting Image Error" });
   }
@@ -82,7 +89,7 @@ const getImagesByType = async (req, res) => {
 
     res.status(200).json(response);
   } catch (error) {
-    res.status(404).json({ message: "Getting Image Error", error });
+    res.status(404).json({ message: "Getting Image Error" });
   }
 };
 

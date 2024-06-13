@@ -17,7 +17,7 @@ const authorize = async (req, res, next) => {
   }
 };
 
-//get full info for only 1 project
+//get full info for only 1 project/
 const _fetchFullProjectInfo = async (req, _res) => {
   try {
     const responseImage = await db("public_images_controller")
