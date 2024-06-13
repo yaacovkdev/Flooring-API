@@ -8,7 +8,7 @@ const projectsController = require(path.join(
 router.route("/").get(projectsController.getAllProjects);
 
 router
-  .route("/:name")
-  .get(projectsController.authorize, projectsController.getProject);
+  .route("/:id")
+  .get(projectsController.authorize, projectsController.getProjectId);
 
 module.exports = router;
