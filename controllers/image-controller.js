@@ -5,15 +5,23 @@ const authorize = async (req, res, next) => {
   try {
     if (req.params.name) {
       const response = await db("public_images_controller")
-        .select("display")
+        .select("name", "display")
         .where("name", "like", `%${req.params.name}%`);
-      if (response[0] && response[0].display) next();
+      if (
+        response[0] &&
+        (response[0].display || response[0].name.match(/^(pre_)/g))
+      )
+        next();
       else res.status(418).json({ message: "This pot has no tea..." });
     } else if (req.params.id) {
       const response = await db("public_images_controller")
-        .select("display")
+        .select("name", "display")
         .where({ id: req.params.id });
-      if (response[0] && response[0].display) next();
+      if (
+        response[0] &&
+        (response[0].display || response[0].name.match(/^(pre_)/g))
+      )
+        next();
       else res.status(418).json({ message: "This pot has no tea..." });
     }
   } catch (error) {
@@ -21,23 +29,23 @@ const authorize = async (req, res, next) => {
   }
 };
 
-const _pathToUnix = (strpath) => {
-  if(process.platform !== "win32") {
-    return strpath.replace(/[\\]/g, "/");
+const _pathToMSDOS = (strpath) => {
+  if (process.platform === "win32") {
+    return strpath.replace(/[/]/g, "\\");
   }
   return strpath;
-}
+};
 
 //returns image
 const getImageByName = async (req, res) => {
   try {
     const response = await db("public_images_controller")
       .select("id", "name", "type")
-      .where("name", "like", `%${req.params.name}%`)
+      .where("name", "like", `%${req.params.name}%`);
 
-    const imagePath = `..\\${response[0].dir}`;
+    const imagePath = `../${response[0].dir}`;
 
-    res.status(200).sendFile(path.join(__dirname, _pathToUnix(imagePath)));
+    res.status(200).sendFile(path.join(__dirname, _pathToMSDOS(imagePath)));
   } catch (error) {
     res.status(404).json({ message: "Getting Image Error" });
   }
@@ -61,9 +69,9 @@ const getImageById = async (req, res) => {
       .select("*")
       .where({ id: req.params.id });
 
-    const imagePath = `..\\${response[0].dir}`;
+    const imagePath = `../${response[0].dir}`;
 
-    res.status(200).sendFile(path.join(__dirname, _pathToUnix(imagePath)));
+    res.status(200).sendFile(path.join(__dirname, _pathToMSDOS(imagePath)));
   } catch (error) {
     res.status(404).json({ message: "Getting Image Error" });
   }
@@ -71,6 +79,7 @@ const getImageById = async (req, res) => {
 
 const getImageByIdText = async (req, res) => {
   try {
+    //gets text of hero by the id linked to the hero image
     const response = await db("hero_titles")
       .select("body")
       .where({ image_id: req.params.id });
@@ -93,14 +102,6 @@ const getImagesByType = async (req, res) => {
   }
 };
 
-const getImagesByProjectName = async (req, res) => {
-  try {
-    const response = await db("")
-  } catch (error) {
-    res.status(404).json({ message: "Getting Image Error", error });
-  }
-};
-
 module.exports = {
   authorize,
   getImageByName,
@@ -108,5 +109,4 @@ module.exports = {
   getImageById,
   getImageByIdText,
   getImagesByType,
-  getImagesByProjectName
 };
