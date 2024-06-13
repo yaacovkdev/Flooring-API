@@ -4,3 +4,4 @@ node_modules/*
 .env
 seed-data/*
 create-images.js
+pem/*

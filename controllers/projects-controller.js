@@ -3,7 +3,6 @@ const db = require("knex")(require("../knexfile"));
 const authorize = async (req, res, next) => {
   try {
     if (req.params.name) {
-      //check for permission to get public text
 
       const responseTexts = await db("contract_descriptions")
         .select("display")
@@ -86,7 +85,7 @@ const _fetchPreviewProjectInfo = async (req, _res) => {
 const _fetchAllProjectsInfo = async () => {
   try {
     const responseText = await db("contract_descriptions")
-      .select("project_name", "description")
+      .select("id", "name", "description", "dir")
       .where({ display: 1 });
 
     const projects_data = [];
@@ -96,8 +95,10 @@ const _fetchAllProjectsInfo = async () => {
         .select("id", "name")
         .where({ type: "work" })
         .andWhere({ display: 1 })
-        .andWhereLike("dir", `%${responseText[i].project_name}%`);
+        .andWhereLike("dir", `%${responseText[i].dir}%`);
+      console.log(responseImage, responseText[i].dir);
 
+      //add the project data to the response
       projects_data.push(
         Object.assign({ images: new Array(...responseImage) }, responseText[i])
       );
@@ -113,7 +114,7 @@ const _fetchAllProjectsInfo = async () => {
 const _fetchAllPreviewProjectsInfo = async () => {
   try {
     const responseText = await db("contract_descriptions")
-      .select("project_name", "description")
+    .select("id", "name", "description", "dir")
       .where({ display: 1 });
 
     const projects_data = [];
@@ -123,7 +124,9 @@ const _fetchAllPreviewProjectsInfo = async () => {
         .select("id", "name")
         .where({ type: "work" })
         .andWhere({ display: 1 })
-        .andWhereLike("dir", `%${responseText[i].project_name}%`);
+        .andWhereLike("dir", `${responseText[i].dir}%`);
+      
+      console.log(responseImage);
 
       projects_data.push(
         Object.assign({ images: new Array(responseImage[0]) }, responseText[i])

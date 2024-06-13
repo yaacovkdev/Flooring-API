@@ -101,5 +101,5 @@ module.exports = {
   getImageById,
   getImageByIdText,
   getImagesByType,
-  getImagesByProjectName
+  getImagesByProjectName,
 };
