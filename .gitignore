@@ -1,7 +1,8 @@
 node_modules/*
-*.json
+seed-data/*
 *.jpg
 .env
 seed-data/*
 create-images.js
 pem/*
+.vscode/
