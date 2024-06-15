@@ -5,3 +5,4 @@ seed-data/*
 seed-data/*
 create-images.js
 pem/*
+.vscode/
