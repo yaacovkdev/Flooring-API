@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 const corsOptions = {
-  origin: "http://localhost:3000", // Your React app's origin
+  origin: ["http://localhost:3001", "http://localhost:3000"], //Admin and Main Website
   credentials: true, // Allow credentials (cookies) to be sent
 };
 
