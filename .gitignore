@@ -1,5 +1,5 @@
 node_modules/*
-*.json
+seed-data/*
 *.jpg
 .env
 seed-data/*
